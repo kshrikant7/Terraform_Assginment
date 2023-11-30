@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # ec2.tf
 
 resource "aws_instance" "public_instance" {
@@ -9,7 +9,6 @@ resource "aws_instance" "public_instance" {
 
   tags = {
     Name = "public_instance"
-=======
 #ec2
 
 provider "aws" {
@@ -26,40 +25,32 @@ resource "aws_instance" "public_instance" {
 
   tags = {
     Name = "Public Instance"
->>>>>>> 68318f6 (Initial Commit)
   }
 
   provisioner "remote-exec" {
     inline = [
-<<<<<<< HEAD
       "sudo yum install -y nginx",
       "sudo systemctl start nginx",
       "sudo systemctl enable nginx"
-=======
       "sudo yum update -y",
       "sudo yum install -y nginx",
       "sudo service nginx start",
       "sudo chkconfig nginx on",
       "sudo echo '${tls_private_key.ssh_key.private_key_pem}' > /home/ec2-user/private_key.pem",
       "sudo chmod 400 /home/ec2-user/private_key.pem"
->>>>>>> 68318f6 (Initial Commit)
     ]
 
     connection {
       type        = "ssh"
       user        = "ec2-user"
-<<<<<<< HEAD
       private_key = tls_private_key.my_private_key.private_key_pem
-=======
       private_key  = tls_private_key.ssh_key.private_key_pem
       host = self.public_ip
->>>>>>> 68318f6 (Initial Commit)
     }
   }
 }
 
 resource "aws_instance" "private_instance" {
-<<<<<<< HEAD
   ami           = "ami-0c55b159cbfafe1f0"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.my_key_pair.key_name
@@ -86,7 +77,6 @@ resource "aws_instance" "private_instance" {
 data "tls_private_key" "my_private_key" {
   private_key_pem = base64decode(credentials("SSH_Private"))
 }
-=======
   ami                    = "ami-01b66f9994a4d8384"
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.private_subnet.id
@@ -99,4 +89,3 @@ data "tls_private_key" "my_private_key" {
     Name = "Private Instance"
   }
 }
->>>>>>> 68318f6 (Initial Commit)

@@ -1,5 +1,4 @@
 pipeline {
-<<<<<<< HEAD
   agent any
 
   environment {
@@ -36,7 +35,6 @@ pipeline {
     }
   }
 }
-=======
     agent any
 
     stages {
@@ -69,4 +67,3 @@ pipeline {
         }
     }
 }
->>>>>>> 68318f6 (Initial Commit)
