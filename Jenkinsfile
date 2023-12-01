@@ -5,6 +5,15 @@ pipeline {
         AWS_REGION = 'us-east-1'
     }
 
+    stage('Check AWS CLI Version') {
+    steps {
+        script {
+            sh 'aws --version'
+        }
+    }
+}
+
+
     stages {
         stage('Setup AWS Credentials') {
             steps {
@@ -14,10 +23,6 @@ pipeline {
                         // Set AWS credentials as environment variables
                         env.AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
                         env.AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
-
-                        // Mask the credentials manually in the console output
-                        echo "AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}" // This line will mask the credentials
-                        echo "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}" // This line will mask the credentials
                     }
                 }
             }
