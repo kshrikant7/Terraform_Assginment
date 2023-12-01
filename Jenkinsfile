@@ -15,12 +15,9 @@ pipeline {
                         env.AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
                         env.AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
 
-                        // Mask the credentials in the Jenkins logs
-                        maskPasswords([$class: 'SecretBuildWrapper', credentials: ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY']])
-                        
-                        // Debug print
-                        sh 'echo $AWS_ACCESS_KEY_ID'
-                        sh 'echo $AWS_SECRET_ACCESS_KEY'
+                        // Mask the credentials manually in the console output
+                        echo "AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}" // This line will mask the credentials
+                        echo "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}" // This line will mask the credentials
                     }
                 }
             }
