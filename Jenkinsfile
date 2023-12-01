@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     sh "sudo chmod 400 /var/lib/jenkins/workspace/'Terraform Assignment'/private_key.pem"
-                    sh "cp /var/lib/jenkins/workspace/'Terraform Assignment'/private_key.pem /home/sigmoid/"
+                    sh "sudo cp /var/lib/jenkins/workspace/'Terraform Assignment'/private_key.pem /home/sigmoid/"
                 }
             }
         }
