@@ -5,16 +5,15 @@ pipeline {
         AWS_REGION = 'us-east-1'
     }
 
-    stage('Check AWS CLI Version') {
+  
+    stages {
+      stage('Check AWS CLI Version') {
     steps {
         script {
             sh 'aws --version'
         }
     }
 }
-
-
-    stages {
         stage('Setup AWS Credentials') {
             steps {
                 script {
