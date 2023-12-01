@@ -4,7 +4,7 @@ pipeline {
     environment {
         AWS_REGION = 'us-east-1'
     }
-
+  stages {
         stage('Init/Plan/Apply') {
             steps {
                 script {
@@ -17,3 +17,4 @@ pipeline {
             }
         }
     }
+}
