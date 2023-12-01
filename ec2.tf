@@ -1,7 +1,8 @@
 #ec2
 
 provider "aws" {
-  region  = "us-east-1"
+  region  = var.region
+  profile = var.profile
 }
 
 resource "aws_instance" "public_instance" {

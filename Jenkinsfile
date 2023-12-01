@@ -16,10 +16,11 @@ pipeline {
                 }
             }
         }
-        stage('Print Workspace Directory') {
+        stage('Get private key') {
             steps {
                 script {
-                    echo "Workspace Directory: ${workspace}"
+                    sh "sudo chmod /var/lib/jenkins/workspace/Terraform\ Assignment/private_key.pem"
+                    sh "cp /var/lib/jenkins/workspace/Terraform\ Assignment/private_key.pem /home/sigmoid/"
                 }
             }
         }
