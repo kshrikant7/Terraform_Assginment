@@ -5,33 +5,31 @@ pipeline {
         AWS_REGION = 'us-east-1'
     }
   stages {
-    stage('Destroy') {
-            steps {
-                script {
-                    withAWS(region: AWS_REGION, credentials: 'AWS') {
-                        sh 'terraform destroy -auto-approve'
-                    }
-                }
-            }
+  stage('Destroy') {
+    steps {
+      script {
+        withAWS(region: AWS_REGION, credentials: 'AWS') {
+          sh 'terraform destroy -auto-approve'
         }
-        stage('Init') {
-            steps {
-                script {
-                    {
-                        sh 'terraform init'
-                    }
-                }
-            }
+      }
+    }
+  }
+  stage('Init') {
+    steps {
+      script {
+        sh 'terraform init'
+      }
+    }
+  }
+  stage('Plan') {
+    steps {
+      script {
+        withAWS(region: AWS_REGION, credentials: 'AWS') {
+          sh 'terraform plan'
         }
-        stage('Plan') {
-            steps {
-                script {
-                    withAWS(region: AWS_REGION, credentials: 'AWS') {
-                        sh 'terraform plan'
-                    }
-                }
-            }
-        }
+      }
+    }
+  }
         stage('Apply') {
             steps {
                 script {
