@@ -1,10 +1,9 @@
-#ssh
 resource "tls_private_key" "ssh_key" {
   algorithm = "RSA"
   rsa_bits  = 2048
 }
 
-resource "aws_key_pair" "ec2_key_pair" {
+resource "aws_key_pair" "key_pair" {
   key_name   = var.key_name
   public_key = tls_private_key.ssh_key.public_key_openssh
 }
