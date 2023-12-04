@@ -42,10 +42,11 @@ pipeline {
         stage('Get private key') {
             steps {
                 script {
-                    sh "sudo chmod 400 /var/lib/jenkins/workspace/'Terraform Assignment'/private_key.pem"
-                    sh "sudo cp /var/lib/jenkins/workspace/'Terraform Assignment'/private_key.pem /home/sigmoid/"
+                    sh "sudo chmod 400 /var/lib/jenkins/workspace/Terraform/private_key.pem"
+                    sh "sudo cp /var/lib/jenkins/workspace/Terraform/private_key.pem /home/sigmoid/"
                 }
             }
         }
+        
     }
 }
