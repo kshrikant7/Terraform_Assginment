@@ -23,40 +23,26 @@ pipeline {
                 expression { params.runDestroy == false }
             }
             stages {
-                stage('Plan') {
+                stage('Plan/Apply') {
                     steps {
                         script {
                             withAWS(region: AWS_REGION, credentials: 'AWS') {
                                 sh 'terraform plan'
-                            }
-                        }
-                    }
-                }
-
-                stage('Apply') {
-                    steps {
-                        script {
-                            withAWS(region: AWS_REGION, credentials: 'AWS') {
                                 sh 'terraform apply -auto-approve'
                             }
                         }
                     }
                 }
+                stage('Get private key') {
+                    steps {
+                        script {
+                            sh "sudo chmod 400 /var/lib/jenkins/workspace/Terraform/private_key.pem"
+                            sh "sudo cp /var/lib/jenkins/workspace/Terraform/private_key.pem /home/sigmoid/"
+                        }
+                    }
+                } 
             }
         }
-
-        stage('Get private key') {
-            when {
-                expression { params.runDestroy == false }
-            }
-            steps {
-                script {
-                    sh "sudo chmod 400 /var/lib/jenkins/workspace/Terraform/private_key.pem"
-                    sh "sudo cp /var/lib/jenkins/workspace/Terraform/private_key.pem /home/sigmoid/"
-                }
-            }
-        }
-
         stage('Terraform Destroy') {
             when {
                 expression { params.runDestroy == true }
