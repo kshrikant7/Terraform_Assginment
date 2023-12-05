@@ -9,61 +9,65 @@ pipeline {
         booleanParam(defaultValue: false, description: 'Run terraform destroy?', name: 'runDestroy')
     }
 
-
     stages {
-      stage('Init') {
-        steps {
-          script {
-            sh 'terraform init'
-          }
-        }
-      }
-  // stage('Destroy') {
-  //   steps {
-  //     script {
-  //       withAWS(region: AWS_REGION, credentials: 'AWS') {
-  //         sh 'terraform destroy -auto-approve'
-  //       }
-  //     }
-  //   }
-  // }
-      stage('Plan') {
-        steps {
-          script {
-            withAWS(region: AWS_REGION, credentials: 'AWS') {
-              sh 'terraform plan'
+        stage('Init') {
+            steps {
+                script {
+                    sh 'terraform init'
+                }
             }
-          }
         }
-      }
-      stage('Apply') {
-        steps {
-          script {
-            withAWS(region: AWS_REGION, credentials: 'AWS') {
-              sh 'terraform apply -auto-approve'
+
+        stage('Create Infrastructure') {
+            when {
+                expression { params.runDestroy == false }
             }
-          }
-        }
-      }
-      stage('Get private key') {
-        steps {
-          script {
-            sh "sudo chmod 400 /var/lib/jenkins/workspace/Terraform/private_key.pem"
-            sh "sudo cp /var/lib/jenkins/workspace/Terraform/private_key.pem /home/sigmoid/"
-          }
-        }
-      }
-      stage('Terraform Destroy') {
-        when {
-          expression { params.runDestroy == true }
-        }
-        steps {
-          script {
-            withAWS(region: AWS_REGION, credentials: 'AWS') {
-              sh 'terraform destroy -auto-approve'
+            stages {
+                stage('Plan') {
+                    steps {
+                        script {
+                            withAWS(region: AWS_REGION, credentials: 'AWS') {
+                                sh 'terraform plan'
+                            }
+                        }
+                    }
+                }
+
+                stage('Apply') {
+                    steps {
+                        script {
+                            withAWS(region: AWS_REGION, credentials: 'AWS') {
+                                sh 'terraform apply -auto-approve'
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
+
+        stage('Get private key') {
+            when {
+                expression { params.runDestroy == false }
+            }
+            steps {
+                script {
+                    sh "sudo chmod 400 /var/lib/jenkins/workspace/Terraform/private_key.pem"
+                    sh "sudo cp /var/lib/jenkins/workspace/Terraform/private_key.pem /home/sigmoid/"
+                }
+            }
+        }
+
+        stage('Terraform Destroy') {
+            when {
+                expression { params.runDestroy == true }
+            }
+            steps {
+                script {
+                    withAWS(region: AWS_REGION, credentials: 'AWS') {
+                        sh 'terraform destroy -auto-approve'
+                    }
+                }
+            }
+        }
     }
 }
